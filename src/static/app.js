@@ -25,7 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Agenda:</strong> ${details.schedule}</p>
           <p><strong>Disponibilidade:</strong> ${spotsLeft} vagas disponíveis</p>
+          <ul class="participants-list"></ul>
         `;
+
+        details.participants.forEach(participant => {
+          const li = document.createElement('li');
+          li.textContent = participant;
+          activityCard.querySelector('.participants-list').appendChild(li);
+        });
 
         activitiesList.appendChild(activityCard);
 
@@ -80,6 +87,32 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Erro na inscrição:", error);
     }
   });
+
+  async function handleSignup(activityId) {
+    const email = prompt('Por favor, digite seu e-mail:');
+    if (!email) return;
+
+    try {
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ activity_id: activityId, email: email }),
+        });
+
+        if (response.ok) {
+            alert('Inscrição realizada com sucesso!');
+            // Atualiza a lista de atividades para mostrar o novo participante
+            await fetchActivities();
+        } else {
+            alert('Erro ao realizar inscrição.');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao realizar inscrição.');
+    }
+}
 
   // Initialize app
   fetchActivities();
