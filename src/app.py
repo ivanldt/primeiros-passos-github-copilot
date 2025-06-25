@@ -38,6 +38,45 @@ activities = {
       "schedule": "Segundas, quartas e sextas, 14h - 15h",
       "max_participants": 30,
       "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+   },
+   # Esportivas
+   "Futebol": {
+      "description": "Treinamento e partidas de futebol para todos os níveis",
+      "schedule": "Terças e quintas, 16h - 17h30",
+      "max_participants": 22,
+      "participants": []
+   },
+   "Vôlei": {
+      "description": "Aulas e jogos de vôlei para iniciantes e avançados",
+      "schedule": "Quartas e sextas, 15h - 16h30",
+      "max_participants": 18,
+      "participants": []
+   },
+   # Artísticas
+   "Teatro": {
+      "description": "Expressão artística e atuação em peças teatrais",
+      "schedule": "Segundas e quartas, 17h - 18h30",
+      "max_participants": 15,
+      "participants": []
+   },
+   "Oficina de Pintura": {
+      "description": "Aprenda técnicas de pintura e crie suas próprias obras de arte",
+      "schedule": "Sábados, 10h - 12h",
+      "max_participants": 10,
+      "participants": []
+   },
+   # Intelectuais
+   "Clube de Leitura": {
+      "description": "Leitura e discussão de livros clássicos e contemporâneos",
+      "schedule": "Sextas, 17h - 18h",
+      "max_participants": 16,
+      "participants": []
+   },
+   "Olimpíada de Matemática": {
+      "description": "Preparação para olimpíadas e desafios matemáticos",
+      "schedule": "Terças, 14h - 15h30",
+      "max_participants": 25,
+      "participants": []
    }
 }
 
@@ -61,6 +100,10 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specificy activity
     activity = activities[activity_name]
+
+    # Validar se o estudante já está inscrito 
+    if email in activity["participants"]:
+      raise HTTPException(status_code=400, detail=f"{email} já está inscrito(a) em {activity_name}")
 
     # Add student
     activity["participants"].append(email)
